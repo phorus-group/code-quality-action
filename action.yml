@@ -44,6 +44,7 @@ runs:
     - name: "Copy working directory"
       shell: bash
       run: |
+        mkdir -p ${{ github.workspace }}/configs/codeclimate/code/
         for file in "${{ github.workspace }}/"*
         do
           [[ $file = ${{ github.workspace }}/configs ]] && continue
