@@ -36,7 +36,7 @@ echo $(ls -a $SOURCE_CODE)
 echo "pwd:"
 echo $(ls -a $PWD)
 
-echo "pwd-config:"
+echo "pwd-config is:"
 echo $(ls -a configs/codeclimate/defaults)
 
 # Copy default config file unless already present for eslint
