@@ -1,0 +1,38 @@
+name: Verify Action
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  self_check:
+    name: Run this Action
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Clone test project"
+        uses: actions/checkout@v4
+        with:
+          repository: phorus-group/mapper
+
+      - name: "Clone action"
+        uses: actions/checkout@v4
+        with:
+          path: action
+          clean: false
+
+      - name: "Call action"
+        id: action
+        uses: ./action
+
+  enforce-all-checks:
+    name: Enforce all checks
+    needs: [self_check]
+    runs-on: ubuntu-latest
+    permissions:
+      checks: read
+    steps:
+      - name: Enforce all checks
+        uses: poseidon/wait-for-status-checks@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ignore: Enforce all checks

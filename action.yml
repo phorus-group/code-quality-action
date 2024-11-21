@@ -1,0 +1,53 @@
+name: Code Quality Action
+description: An action used to measure a project's code quality
+
+inputs:
+  source-code:
+    description: "Source code location"
+    required: false
+    default: "."
+  timeout-seconds:
+    description: "Timeout in seconds"
+    required: false
+    default: "900"
+  codeclimate-dev:
+    description: "Set to enable Code Climate --dev mode. This lets you run engines not known to the CLI"
+    required: false
+    default: ""
+  report-stdout:
+    description: "Set to print the report to STDOUT instead of generating the usual report file"
+    required: false
+    default: ""
+  report-format:
+    description: "Report format. Supported: 'json', 'html'"
+    required: false
+    default: "json"
+  engine-memory-limit-bytes:
+    description: "Set the memory limit for engines. Default: 1,024,000,000 bytes."
+    required: false
+    default: "1024000000"
+  codeclimate-debug:
+    description: "Enables Code Climate debug mode if set to 1"
+    required: false
+    default: "0"
+
+runs:
+  using: composite
+  steps:
+    - name: "Clone default configurations"
+      uses: actions/checkout@v4
+      with:
+        repository: phorus-group/code-quality-test
+        path: configs
+        clean: false
+
+    - name: "Run code quality checks"
+      uses: ./configs/codeclimate/action
+      with:
+        source-code: ${{ inputs.source-code }}
+        timeout-seconds: ${{ inputs.timeout-seconds }}
+        codeclimate-dev: ${{ inputs.codeclimate-dev }}
+        report-stdout: ${{ inputs.report-stdout }}
+        report-format: ${{ inputs.report-format }}
+        engine-memory-limit-bytes: ${{ inputs.engine-memory-limit-bytes }}
+        codeclimate-debug: ${{ inputs.codeclimate-debug }}

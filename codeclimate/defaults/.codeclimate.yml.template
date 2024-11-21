@@ -1,0 +1,49 @@
+---
+version: "2"
+plugins:
+  csslint:
+    enabled: true
+  sonar-java:
+    enabled: true
+    config:
+      tests_patterns:
+        - src/test/**
+        - app/src/test/**
+  sonar-python:
+    enabled: true
+  coffeelint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - ruby
+        - javascript
+        - python
+        - php
+  eslint:
+    enabled: true
+    channel: __ESLINT_CHANNEL__
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+    channel: rubocop-0-92
+exclude_patterns:
+  - config/
+  - db/
+  - dist/
+  - features/
+  - "**/node_modules/"
+  - script/
+  - "**/spec/"
+  - "**/test/"
+  - "**/tests/"
+  - Tests/
+  - "**/vendor/"
+  - "**/*_test.go"
+  - "**/*.d.ts"
+  - "**/*.min.js"
+  - "**/*.min.css"
+  - "**/__tests__/"
+  - "**/__mocks__/"
