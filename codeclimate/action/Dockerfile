@@ -1,7 +1,7 @@
 FROM docker:stable
 
-COPY ../.. /code
-COPY ../defaults /codeclimate_defaults
+COPY $GITHUB_WORKSPACE /code
+COPY $GITHUB_WORKSPACE/configs/codeclimate/defaults /codeclimate_defaults
 
 RUN chmod +x /run.sh
 
