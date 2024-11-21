@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Map input values from the GitHub Actions workflow to shell variables
-SOURCE_CODE="/code/$1"
+SOURCE_CODE="/code"
 TIMEOUT_SECONDS=$2
 CODECLIMATE_DEV=$3
 REPORT_STDOUT=$4
@@ -69,7 +69,16 @@ docker run --rm \
     --volume "$SOURCE_CODE":/code \
     --volume /tmp/cc:/tmp/cc \
     --volume "$DOCKER_SOCKET_PATH":/var/run/docker.sock \
-    "${CODECLIMATE_FULL_IMAGE}" --no-check-version engines:install
+    "${CODECLIMATE_FULL_IMAGE}" --no-check-version engines:install > /dev/null
+
+docker run --rm \
+    --env CODECLIMATE_CODE="$SOURCE_CODE" \
+    --env CODECLIMATE_DEBUG="$CODECLIMATE_DEBUG" \
+    --env CONTAINER_TIMEOUT_SECONDS="$CONTAINER_TIMEOUT_SECONDS" \
+    --volume "$SOURCE_CODE":/code \
+    --volume /tmp/cc:/tmp/cc \
+    --volume "$DOCKER_SOCKET_PATH":/var/run/docker.sock \
+    "${CODECLIMATE_FULL_IMAGE}" --help
 
 if [ $? -ne 0 ]; then
     echo "Could not install code climate engines for the repository at $SOURCE_CODE"
