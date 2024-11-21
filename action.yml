@@ -94,10 +94,6 @@ runs:
           sed -e "s/__ESLINT_CHANNEL__/\"$ESLINT_CHANNEL\"/" "codequality/defaults/.codeclimate.yml.template" > ".codeclimate.yml"
         fi
 
-    - name: "Check files"
-      shell: bash
-      run: ls -a
-
     - name: Run Code Climate
       id: code-quality
       uses: phorus-group/codeclimate-standalone@main
@@ -110,13 +106,8 @@ runs:
         critical_threshold: ${{ inputs.critical-threshold }}
         blocker_threshold: ${{ inputs.blocker-threshold }}
 
-    - name: Report Status Check
-      if: always()
-      uses: phorus-group/workflow-status-check-action@main
-      with:
-        state: ${{ steps.code-quality.outcome }}
-
     - name: "Prepare branch name"
+      if: always()
       id: prepare_branch_name
       uses: phorus-group/unslash-text-action@main
       with:
@@ -129,3 +120,8 @@ runs:
         path: |
           codeclimate-report.json
           codeclimate-report.html
+
+    - name: Report Status Check
+      uses: phorus-group/workflow-status-check-action@main
+      with:
+        state: ${{ steps.code-quality.outcome }}
