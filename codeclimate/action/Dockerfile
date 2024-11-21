@@ -1,8 +1,7 @@
 FROM docker:stable
 
-COPY . /code
-RUN ls -la /code
-COPY /code/configs/codeclimate/defaults /codeclimate_defaults
+COPY ../.. /code
+COPY ../defaults /codeclimate_defaults
 
 RUN chmod +x /run.sh
 
