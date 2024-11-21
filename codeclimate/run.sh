@@ -89,6 +89,8 @@ docker run --rm \
     --volume "$DOCKER_SOCKET_PATH":/var/run/docker.sock \
     "${CODECLIMATE_FULL_IMAGE}" engines:list
 
+echo $(ls)
+
 docker run --rm \
     --env CODECLIMATE_CODE="$SOURCE_CODE" \
     --env CODECLIMATE_DEBUG="$CODECLIMATE_DEBUG" \
