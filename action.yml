@@ -91,7 +91,7 @@ runs:
         # Render default config file unless already present for code climate
         # NB: check for all supported config files
         if ! [ -f  ".codeclimate.yml" ] || [ -f ".codeclimate.json" ] ; then
-          sed -e "s/__ESLINT_CHANNEL__/\"$ESLINT_CHANNEL\"/" "codeclimate/defaults/.codeclimate.yml.template" > ".codeclimate.yml"
+          sed -e "s/__ESLINT_CHANNEL__/\"$ESLINT_CHANNEL\"/" "codequality/defaults/.codeclimate.yml.template" > ".codeclimate.yml"
         fi
 
     - name: "Check files"
