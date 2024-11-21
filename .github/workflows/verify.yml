@@ -12,7 +12,7 @@ jobs:
       - name: "Clone test project"
         uses: actions/checkout@v4
         with:
-          repository: dstroot/nextjs-13-example
+          repository: phorus-group/mapper
 
       - name: "Clone action"
         uses: actions/checkout@v4
