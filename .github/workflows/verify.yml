@@ -26,7 +26,6 @@ jobs:
 
       - name: "Upload report"
         if: always()
-        id: action
         run: |
           cat codeclimate-report.html >> "$GITHUB_STEP_SUMMARY"
 
