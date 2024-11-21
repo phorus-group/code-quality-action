@@ -96,7 +96,7 @@ runs:
 
     - name: Run Code Climate
       id: code-quality
-      uses: phorus-group/codeclimate-standalone@main
+      uses: phorus-group/codeclimate-standalone-action@main
       with:
         config_file: ${{ inputs.config-file }}
         html_report: ${{ inputs.html-report }}
@@ -114,14 +114,10 @@ runs:
         text: ${{ github.head_ref || github.ref_name }}
 
     - name: Upload Reports
+      if: always()
       uses: actions/upload-artifact@master
       with:
         name: code-climate-reports-${{ steps.prepare_branch_name.outputs.text }}
         path: |
           codeclimate-report.json
           codeclimate-report.html
-
-    - name: Report Status Check
-      uses: phorus-group/workflow-status-check-action@main
-      with:
-        state: ${{ steps.code-quality.outcome }}
