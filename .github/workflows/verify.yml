@@ -24,10 +24,13 @@ jobs:
         id: action
         uses: ./action
 
-      - name: "Upload report"
+      - uses: buildingcash/json-to-markdown-table-action@v1
         if: always()
-        run: |
-          cat codeclimate-report.html >> "$GITHUB_STEP_SUMMARY"
+        id: table
+        with:
+          json_file_path: "codeclimate-report.json"
+      - if: always()
+        run: echo ${{ steps.table.outputs.table }} >> "$GITHUB_STEP_SUMMARY"
 
   enforce-all-checks:
     name: Enforce all checks
