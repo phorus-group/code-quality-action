@@ -43,7 +43,12 @@ runs:
 
     - name: "Copy working directory"
       shell: bash
-      run: cp -rf ${{ github.workspace }} configs/codeclimate/code
+      run: |
+        for file in "${{ github.workspace }}/"*
+        do
+          [[ $file = ${{ github.workspace }}/configs ]] && continue
+          cp -r "$file" "${{ github.workspace }}/configs/codeclimate/code"
+        done
 
     - name: "Run code quality checks"
       uses: ./configs/codeclimate
