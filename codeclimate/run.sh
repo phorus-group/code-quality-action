@@ -69,7 +69,7 @@ docker run --rm \
     --volume "$SOURCE_CODE":/code \
     --volume /tmp/cc:/tmp/cc \
     --volume "$DOCKER_SOCKET_PATH":/var/run/docker.sock \
-    "${CODECLIMATE_FULL_IMAGE}" --no-check-version engines:install > /dev/null
+    "${CODECLIMATE_FULL_IMAGE}" --no-check-version engines:install
 
 if [ $? -ne 0 ]; then
     echo "Could not install code climate engines for the repository at $SOURCE_CODE"
