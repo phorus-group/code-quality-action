@@ -1,8 +1,10 @@
 FROM docker:stable
 
+COPY ../action/action.yml /action
+COPY ../action/run.sh /run.sh
+COPY ../action/Dockerfile /Dockerfile
+COPY ../defaults/coffeelint.json /tmptmp
 COPY ../defaults /codeclimate_defaults
-COPY ../../configs /code
-COPY $GITHUB_WORKSPACE/configs/codeclimate/defaults /codeclimate_defaults
 
 RUN chmod +x /run.sh
 
