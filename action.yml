@@ -2,34 +2,50 @@ name: Code Quality Action
 description: An action used to measure a project's code quality
 
 inputs:
-  source-code:
-    description: "Source code location"
+  config-file:
+    description: "Optionally provide a path to your codeclimate.yml relative to your project"
     required: false
-    default: "."
-  timeout-seconds:
-    description: "Timeout in seconds"
+    default: ".codeclimate.yml"
+  html-report:
+    description: "Should a faster, second, execution occur in order to generate an HTML report"
     required: false
-    default: "900"
-  codeclimate-dev:
-    description: "Set to enable Code Climate --dev mode. This lets you run engines not known to the CLI"
+    default: "true"
+  info-threshold:
+    description: "The number of findings of this severity allowed before the job returns a failure"
     required: false
-    default: ""
-  report-stdout:
-    description: "Set to print the report to STDOUT instead of generating the usual report file"
+    default: "10"
+  minor-threshold:
+    description: "The number of findings of this severity allowed before the job returns a failure"
     required: false
-    default: ""
-  report-format:
-    description: "Report format. Supported: 'json', 'html'"
+    default: "5"
+  major-threshold:
+    description: "The number of findings of this severity allowed before the job returns a failure"
     required: false
-    default: "json"
-  engine-memory-limit-bytes:
-    description: "Set the memory limit for engines. Default: 1,024,000,000 bytes."
-    required: false
-    default: "1024000000"
-  codeclimate-debug:
-    description: "Enables Code Climate debug mode if set to 1"
+    default: "1"
+  critical-threshold:
+    description: "The number of findings of this severity allowed before the job returns a failure"
     required: false
     default: "0"
+  blocker-threshold:
+    description: "The number of findings of this severity allowed before the job returns a failure"
+    required: false
+    default: "0"
+outputs:
+  info-findings:
+    description: "The number of findings of severity INFO"
+    value: ${{ steps.code-quality.outputs.info }}
+  minor-findings:
+    description: "The number of findings of severity MINOR"
+    value: ${{ steps.code-quality.outputs.minor }}
+  major-findings:
+    description: "The number of findings of severity MAJOR"
+    value: ${{ steps.code-quality.outputs.major }}
+  critical-findings:
+    description: "The number of findings of severity CRITICAL"
+    value: ${{ steps.code-quality.outputs.critical }}
+  blocker-findings:
+    description: "The number of findings of severity BLOCKER"
+    value: ${{ steps.code-quality.outputs.blocker }}
 
 runs:
   using: composite
@@ -38,16 +54,70 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: phorus-group/code-quality-test
-        path: configs
+        path: codequality
         clean: false
 
-    - name: "Run code quality checks"
-      uses: ./configs/codeclimate/action
+    - name: "Configure defaults"
+      shell: bash
+      run: |
+        # Copy default config files unless already present for csslint, eslint (ignore), rubocop and coffeelint
+        for config_file in .csslintrc .eslintignore .rubocop.yml coffeelint.json; do
+          if [ ! -f "$config_file" ] ; then
+            echo "Copying default configuration codequality/defaults/$config_file"
+            cp "codequality/defaults/$config_file" .
+          fi
+        done
+        
+        # Copy default config file unless already present for eslint
+        # NB: check for all supported config files
+        if ! [[ -f ".eslintrc.js" || -f ".eslintrc.yaml" || -f ".eslintrc.yml" || -f ".eslintrc.json" || -f ".eslintrc" ]]; then
+          cp -rf "codequality/defaults/.eslintrc.yml" .
+        fi
+        
+        # Detect eslint version for using proper channel
+        ESLINT_CHANNEL="stable"
+        if [ -f "package.json" ] ; then
+          ESLINT_VERSION_FROM_PACKAGE_JSON=$(jq -r '[.dependencies.eslint, .devDependencies.eslint] | map(select (. != null)) | first' "package.json")
+          # Supported notation: ~5.3.0, ^5.3.0, 5.3.0
+          ESLINT_MAJOR_VERSION=$(echo "$ESLINT_VERSION_FROM_PACKAGE_JSON" | sed -E 's/^[~^]?([0-9]+).*/\1/')
+        
+          # codeclimate-eslint has no versions greater than 8 ATM
+          # See https://github.com/codeclimate/codeclimate/blob/master/config/engines.yml#L66
+          if [ -n "$ESLINT_MAJOR_VERSION" ] && [ "$ESLINT_MAJOR_VERSION" -le 8 ]; then
+            ESLINT_CHANNEL="eslint-$ESLINT_MAJOR_VERSION"
+          fi
+        fi
+        
+        # Render default config file unless already present for code climate
+        # NB: check for all supported config files
+        if ! [ -f  ".codeclimate.yml" ] || [ -f ".codeclimate.json" ] ; then
+          sed -e "s/__ESLINT_CHANNEL__/\"$ESLINT_CHANNEL\"/" "codequality/defaults/.codeclimate.yml.template" > ".codeclimate.yml"
+        fi
+
+    - name: Run Code Climate
+      id: code-quality
+      uses: phorus-group/codeclimate-standalone-action@main
       with:
-        source-code: ${{ inputs.source-code }}
-        timeout-seconds: ${{ inputs.timeout-seconds }}
-        codeclimate-dev: ${{ inputs.codeclimate-dev }}
-        report-stdout: ${{ inputs.report-stdout }}
-        report-format: ${{ inputs.report-format }}
-        engine-memory-limit-bytes: ${{ inputs.engine-memory-limit-bytes }}
-        codeclimate-debug: ${{ inputs.codeclimate-debug }}
+        config_file: ${{ inputs.config-file }}
+        html_report: ${{ inputs.html-report }}
+        info_threshold:  ${{ inputs.info-threshold }}
+        minor_threshold: ${{ inputs.minor-threshold }}
+        major_threshold: ${{ inputs.major-threshold }}
+        critical_threshold: ${{ inputs.critical-threshold }}
+        blocker_threshold: ${{ inputs.blocker-threshold }}
+
+    - name: "Prepare branch name"
+      if: always()
+      id: prepare_branch_name
+      uses: phorus-group/unslash-text-action@main
+      with:
+        text: ${{ github.head_ref || github.ref_name }}
+
+    - name: Upload Reports
+      if: always()
+      uses: actions/upload-artifact@master
+      with:
+        name: code-climate-reports-${{ steps.prepare_branch_name.outputs.text }}
+        path: |
+          codeclimate-report.json
+          codeclimate-report.html
