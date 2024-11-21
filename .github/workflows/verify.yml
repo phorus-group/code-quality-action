@@ -24,13 +24,14 @@ jobs:
         id: action
         uses: ./action
 
-      - uses: buildingcash/json-to-markdown-table-action@v1
+      - name: Convert HTML to Markdown
+        id: html2markdown
         if: always()
-        id: table
+        uses: rknj/html2markdown@v0.1.0
         with:
-          json_file_path: "codeclimate-report.json"
+          html-file: "codeclimate-report.html"
       - if: always()
-        run: echo ${{ steps.table.outputs.table }} >> "$GITHUB_STEP_SUMMARY"
+        run: echo ${{ steps.html2markdown.outputs.markdown-content }} >> "$GITHUB_STEP_SUMMARY"
 
   enforce-all-checks:
     name: Enforce all checks
