@@ -12,7 +12,7 @@ jobs:
       - name: "Clone test project"
         uses: actions/checkout@v4
         with:
-          repository: phorus-group/mapper
+          repository: dstroot/nextjs-13-example
 
       - name: "Clone action"
         uses: actions/checkout@v4
@@ -23,6 +23,12 @@ jobs:
       - name: "Call action"
         id: action
         uses: ./action
+
+      - name: "Upload report"
+        if: always()
+        id: action
+        run: |
+          cat codeclimate-report.html >> "$GITHUB_STEP_SUMMARY"
 
   enforce-all-checks:
     name: Enforce all checks
