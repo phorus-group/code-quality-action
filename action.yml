@@ -123,7 +123,7 @@ runs:
         text: ${{ github.head_ref || github.ref_name }}
 
     - name: Upload Reports
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@master
       with:
         name: code-climate-reports-${{ steps.prepare_branch_name.outputs.text }}
         path: |
