@@ -100,7 +100,7 @@ runs:
 
     - name: Run Code Climate
       id: code-quality
-      uses: erzz/codeclimate-standalone@main
+      uses: phorus-group/codeclimate-standalone@main
       with:
         config_file: ${{ inputs.config-file }}
         html_report: ${{ inputs.html-report }}
