@@ -9,34 +9,6 @@ REPORT_FORMAT=$5
 ENGINE_MEMORY_LIMIT_BYTES=$6
 CODECLIMATE_DEBUG=$7
 
-usage="$(basename "$0") [-h] <app_path>
-
-where:
-    -h  show this help text
-    app_path The path to the source code of the project you want to analyze."
-
-while getopts 'h' option; do
-  case "$option" in
-    h) echo "$usage"
-       exit
-       ;;
-    :) printf "missing argument for -%s\n" "$OPTARG" >&2
-       echo "$usage" >&2
-       exit 1
-       ;;
-   \?) printf "illegal option: -%s\n" "$OPTARG" >&2
-       echo "$usage" >&2
-       exit 1
-       ;;
-  esac
-done
-shift $((OPTIND - 1))
-
-if [ $# -ne 1 ] ; then
-  echo "$usage"
-  exit
-fi
-
 APP_PATH=$SOURCE_CODE
 REPORT_FILENAME_PREFIX="code-quality-report"
 REPORT_FORMAT=${REPORT_FORMAT:-json}
