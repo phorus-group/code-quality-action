@@ -45,7 +45,7 @@ runs:
       shell: bash
       run: |
         mkdir -p ${{ github.workspace }}/configs/codeclimate/code
-        for file in "${{ github.workspace }}/"*
+        for file in "${{ github.workspace }}/"* "${{ github.workspace }}/".[^.]*
         do
           [[ $file = ${{ github.workspace }}/configs ]] && continue
           cp -r "$file" "${{ github.workspace }}/configs/codeclimate/code/."

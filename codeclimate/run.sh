@@ -33,6 +33,9 @@ for config_file in .csslintrc .eslintignore .rubocop.yml coffeelint.json; do
 done
 echo $(ls $SOURCE_CODE)
 
+echo "pwd:"
+echo $(ls $PWD)
+
 # Copy default config file unless already present for eslint
 # NB: check for all supported config files
   if ! [ -f "$SOURCE_CODE/.eslintrc.js" ] || [ -f "$SOURCE_CODE/.eslintrc.yaml" ] || [ -f "$SOURCE_CODE/.eslintrc.yml" ] || [ -f "$SOURCE_CODE/.eslintrc.json" ] || [ -f "$SOURCE_CODE/.eslintrc" ] ; then
