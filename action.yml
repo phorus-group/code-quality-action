@@ -9,7 +9,7 @@ inputs:
   html-report:
     description: "Should a faster, second, execution occur in order to generate an HTML report"
     required: false
-    default: "false"
+    default: "true"
   info-threshold:
     description: "The number of findings of this severity allowed before the job returns a failure"
     required: false

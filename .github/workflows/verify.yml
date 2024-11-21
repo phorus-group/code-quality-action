@@ -23,8 +23,6 @@ jobs:
       - name: "Call action"
         id: action
         uses: ./action
-        with:
-          report-stdout: "true"
 
   enforce-all-checks:
     name: Enforce all checks
