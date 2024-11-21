@@ -22,22 +22,22 @@ CONTAINER_TIMEOUT_SECONDS=${TIMEOUT_SECONDS:-900} # default to 15 min
 ENGINE_MEMORY_LIMIT_BYTES=${ENGINE_MEMORY_LIMIT_BYTES:-1024000000} # default 1 Gb
 
 # Copy default config files unless already present for csslint, eslint (ignore), rubocop and coffeelint
-echo $(ls $DEFAULT_FILES_PATH)
+echo $(ls -a $DEFAULT_FILES_PATH)
 echo "source:"
-echo $(ls $SOURCE_CODE)
+echo $(ls -a $SOURCE_CODE)
 for config_file in .csslintrc .eslintignore .rubocop.yml coffeelint.json; do
   if [ ! -f "$SOURCE_CODE/$config_file" ] ; then
     echo "copying $DEFAULT_FILES_PATH/$config_file"
     cp "$DEFAULT_FILES_PATH/$config_file" "$SOURCE_CODE/"
   fi
 done
-echo $(ls $SOURCE_CODE)
+echo $(ls -a $SOURCE_CODE)
 
 echo "pwd:"
-echo $(ls $PWD)
+echo $(ls -a $PWD)
 
 echo "pwd-config:"
-echo $(ls configs/codeclimate/defaults)
+echo $(ls -a configs/codeclimate/defaults)
 
 # Copy default config file unless already present for eslint
 # NB: check for all supported config files
