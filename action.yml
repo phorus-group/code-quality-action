@@ -41,8 +41,12 @@ runs:
         path: configs
         clean: false
 
+    - name: "Copy working directory"
+      shell: bash
+      run: cp -rf ${{ github.workspace }} configs/codeclimate/code
+
     - name: "Run code quality checks"
-      uses: ./configs/codeclimate/action
+      uses: ./configs/codeclimate
       with:
         source-code: ${{ inputs.source-code }}
         timeout-seconds: ${{ inputs.timeout-seconds }}
