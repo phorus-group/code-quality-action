@@ -62,9 +62,9 @@ runs:
       run: |
         # Copy default config files unless already present for csslint, eslint (ignore), rubocop and coffeelint
         for config_file in .csslintrc .eslintignore .rubocop.yml coffeelint.json; do
-          if [ ! -f "$SOURCE_CODE/$config_file" ] ; then
+          if [ ! -f "$config_file" ] ; then
             echo "Copying default configuration codequality/defaults/$config_file"
-            cp "$config_file" .
+            cp "codequality/defaults/$config_file" .
           fi
         done
         
@@ -77,7 +77,7 @@ runs:
         # Detect eslint version for using proper channel
         ESLINT_CHANNEL="stable"
         if [ -f "package.json" ] ; then
-          ESLINT_VERSION_FROM_PACKAGE_JSON=$(jq -r '[.dependencies.eslint, .devDependencies.eslint] | map(select (. != null)) | first' "$SOURCE_CODE/package.json")
+          ESLINT_VERSION_FROM_PACKAGE_JSON=$(jq -r '[.dependencies.eslint, .devDependencies.eslint] | map(select (. != null)) | first' "package.json")
           # Supported notation: ~5.3.0, ^5.3.0, 5.3.0
           ESLINT_MAJOR_VERSION=$(echo "$ESLINT_VERSION_FROM_PACKAGE_JSON" | sed -E 's/^[~^]?([0-9]+).*/\1/')
         
