@@ -1,5 +1,6 @@
 FROM docker:stable
 
+COPY ./action.yml /action
 COPY ./configs /code
 COPY $GITHUB_WORKSPACE/configs/codeclimate/defaults /codeclimate_defaults
 
