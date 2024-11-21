@@ -9,7 +9,8 @@ REPORT_FORMAT=$5
 ENGINE_MEMORY_LIMIT_BYTES=$6
 CODECLIMATE_DEBUG=$7
 
-APP_PATH="/code"
+echo $(ls -la $SOURCE_CODE)
+
 REPORT_FILENAME_PREFIX="code-quality-report"
 REPORT_FORMAT=${REPORT_FORMAT:-json}
 DEFAULT_FILES_PATH=${DEFAULT_FILES_PATH:-/codeclimate_defaults}
@@ -48,6 +49,8 @@ if [ -f "$SOURCE_CODE/package.json" ] ; then
     ESLINT_CHANNEL="eslint-$ESLINT_MAJOR_VERSION"
   fi
 fi
+
+echo $(ls -la $SOURCE_CODE)
 
 # Render default config file unless already present for code climate
 # NB: check for all supported config files
