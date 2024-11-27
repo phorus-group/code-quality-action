@@ -106,18 +106,11 @@ runs:
         critical_threshold: ${{ inputs.critical-threshold }}
         blocker_threshold: ${{ inputs.blocker-threshold }}
 
-    - name: "Prepare branch name"
-      if: always()
-      id: prepare_branch_name
-      uses: phorus-group/unslash-text-action@main
-      with:
-        text: ${{ github.head_ref || github.ref_name }}
-
     - name: Upload Reports
       if: always()
       uses: actions/upload-artifact@master
       with:
-        name: code-climate-reports-${{ steps.prepare_branch_name.outputs.text }}
+        name: code-climate-reports
         path: |
           codeclimate-report.json
           codeclimate-report.html
