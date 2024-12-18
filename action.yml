@@ -53,7 +53,7 @@ runs:
     - name: "Clone default configurations"
       uses: actions/checkout@v4
       with:
-        repository: phorus-group/code-quality-test
+        repository: ${{ github.repository }}
         path: codequality
         clean: false
 
