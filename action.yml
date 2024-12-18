@@ -107,7 +107,7 @@ runs:
         blocker_threshold: ${{ inputs.blocker-threshold }}
 
     - name: Upload Reports
-      if: !cancelled()
+      if: ${{ !cancelled() }}
       uses: actions/upload-artifact@master
       with:
         name: code-climate-reports
