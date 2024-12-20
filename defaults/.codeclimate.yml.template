@@ -50,3 +50,7 @@ exclude_patterns:
   - "**/.git/"
   - "**/.next/"
   - "**/.yarn/"
+  - "*.js"
+  - "*.mjs"
+  - "*.cjs"
+  - "*.ts"
