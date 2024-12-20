@@ -1,8 +1,6 @@
 ---
 version: "2"
 plugins:
-  csslint:
-    enabled: true
   sonar-java:
     enabled: true
     config:
