@@ -17,8 +17,10 @@ plugins:
     enabled: true
     config:
       languages:
+        - kotlin
         - ruby
         - javascript
+        - typescript
         - python
         - php
   eslint:
@@ -54,3 +56,10 @@ exclude_patterns:
   - "*.mjs"
   - "*.cjs"
   - "*.ts"
+checks:
+  method-lines:
+    config:
+      threshold: 80
+  method-complexity:
+    config:
+      threshold: 8
