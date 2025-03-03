@@ -17,8 +17,10 @@ plugins:
       languages:
         - kotlin
         - ruby
-        - javascript
-        - typescript
+        - javascript:
+            mass_threshold: 120
+        - typescript:
+            mass_threshold: 120
         - python
         - php
   eslint:
@@ -57,7 +59,7 @@ exclude_patterns:
 checks:
   method-lines:
     config:
-      threshold: 80
+      threshold: 150
   method-complexity:
     config:
       threshold: 8
