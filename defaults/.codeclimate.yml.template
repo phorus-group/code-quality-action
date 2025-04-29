@@ -18,9 +18,9 @@ plugins:
         - kotlin
         - ruby
         - javascript:
-            mass_threshold: 120
+            mass_threshold: 150
         - typescript:
-            mass_threshold: 120
+            mass_threshold: 150
         - python
         - php
   eslint:
