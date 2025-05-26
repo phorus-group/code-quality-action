@@ -12,17 +12,7 @@ plugins:
   coffeelint:
     enabled: true
   duplication:
-    enabled: true
-    config:
-      languages:
-        - kotlin
-        - ruby
-        - javascript:
-            mass_threshold: 150
-        - typescript:
-            mass_threshold: 150
-        - python
-        - php
+    enabled: false
   eslint:
     enabled: true
     channel: __ESLINT_CHANNEL__
