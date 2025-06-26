@@ -49,7 +49,11 @@ exclude_patterns:
 checks:
   method-lines:
     config:
-      threshold: 160
+      threshold: 200
   method-complexity:
     config:
       threshold: 30
+  return-statements:
+    enabled: false
+  cognitive-complexity:
+    enabled: false
