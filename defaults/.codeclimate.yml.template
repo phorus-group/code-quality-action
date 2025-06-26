@@ -51,9 +51,6 @@ checks:
     config:
       threshold: 200
   method-complexity:
-    config:
-      threshold: 30
-  return-statements:
     enabled: false
-  cognitive-complexity:
+  return-statements:
     enabled: false
